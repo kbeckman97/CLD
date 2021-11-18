@@ -20,7 +20,7 @@ def load_image(img):
 
 
 def main():
-    uploadFile = st.file_uploader(label="Upload files here", type=['jpg', 'png'])
+    uploadFile = st.file_uploader(label="Upload files here", type=[ 'png'])
     if uploadFile is not None:
         # Perform your Manupilations (In my Case applying Filters)
         img = load_image(uploadFile)
@@ -28,7 +28,7 @@ def main():
         st.write("Image Uploaded Successfully")
         if st.button("Save and upload"):
             img.save('Testbild.png')
-            s3.Bucket('mybucket-tes-3').upload_file(Filename='Testbild.png', Key='Test_Webseite/Testbild.png')
+            s3.Bucket('mybucket-tes-3').upload_file(Filename='Testbild.png', Key='Test_Webseite/Testbild.PNG')
             #os.remove('CloudComputing/Testbild.png')
     else:
         st.write("Make sure you image is in JPG/PNG Format.")
