@@ -1,3 +1,4 @@
+import botocore.exceptions
 import streamlit as st
 import boto3
 from PIL import Image
@@ -31,11 +32,25 @@ def main():
             s3.Bucket('mybucket-tes-3').upload_file(Filename='Testbild.png', Key='Test_Webseite/Testbild.PNG')
             #os.remove('CloudComputing/Testbild.png')
     else:
-        st.write("Make sure you image is in JPG/PNG Format.")
+        st.write("Make sure you image is in PNG Format.")
     if st.button("Click me download"):
-        s3.Bucket('mybucket-tes-3').download_file(Key='Test_Webseite/Testbild.png', Filename='Testbild_download.png')
+        try:
+            s3.Bucket('mybucket-tes-3').download_file(Key='Test_Webseite/Testbild.png', Filename='Testbild_download.png')
+        except botocore.exceptions.ClientError:
+            s3.Bucket('mybucket-tes-3').download_file(Key='Test_Webseite/Testbild.PNG', Filename='Testbild_download.png')
+
         img = Image.open('Testbild_download.png')
         st.image(img)
+
+    convertImage = st.file_uploader(label="convert images", type=['png'])
+    if convertImage is not None:
+        imgConvert = load_image(convertImage)
+        st.image(imgConvert)
+        st.write("Image Uploaded Successfully")
+        if st.button("Convert to grayscale"):
+            imgGray = imgConvert.convert('1')
+            imgGray.save('test_gray.png')
+            st.image(imgGray)
 
 
 # Press the green button in the gutter to run the script.
