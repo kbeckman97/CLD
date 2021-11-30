@@ -15,8 +15,8 @@ currentTime = None
 s3 = boto3.resource(
     service_name='s3',
     region_name='eu-central-1',
-    aws_access_key_id=st.secrets["AccesskeyID"],
-    aws_secret_access_key=st.secrets["Secretaccesskey"]
+    aws_access_key_id="AccesskeyID",
+    aws_secret_access_key="Secretaccesskey"
 )
 
 def load_image(img):
@@ -56,6 +56,13 @@ def main():
             st.image(img)
 
             print("Download Sucessfull")
+            with open(imageNameStre_download, "rb") as file:
+                btn = st.download_button(
+                label = "Download image with bounding boxes",
+                data = file,
+                file_name = "Strahlen.png",
+                mime = "image/png"
+                )
     else:
         st.write("Make sure you image is in PNG Format.")
 
@@ -69,8 +76,15 @@ def main():
             imgGray.save('test_gray.png')
             st.image(imgGray)
 
+            with open("test_gray.png", "rb") as file:
+                btn = st.download_button(
+                label = "Download grayscale image",
+                data = file,
+                file_name = "test_gray.png",
+                mime = "image/png"
+                )
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
-
