@@ -31,7 +31,10 @@ def main():
     for file in os.listdir("images"):
         os.remove("images/" + file)
 
-    uploadFile = st.file_uploader(label="Upload files here", type=[ 'png'])
+    st.title('Nebelspurenanalyse von Strahlen')
+    "Bitte laden Sie in den Drap and Drop File Uploader ein Bild hoch, auf dem die Strahlen analysiert werden sollen. Ein Programm analysiert das Bild und markiert die vorhandenen Strahlen. Dieses Bild kann dann anschließend heruntergeladen werden."
+
+    uploadFile = st.file_uploader(label="Bitte fügen Sie hier ihr zu analysierendes Bild ein:", type=[ 'png'])
     if uploadFile is not None:
         # Perform your Manupilations (In my Case applying Filters)
         img_upload = load_image(uploadFile)
@@ -66,8 +69,10 @@ def main():
                 )
 
     else:
-        st.write("Make sure you image is in PNG Format.")
+        st.write("Sie haben noch kein Bild hochladen oder ihr Bild ist nicht im png Format.")
 
+    st.header('Farbbilder konvertieren')
+    "Hier können Sie Farbbilder in 8-Bit Grauwertbilder konvertieren. Bitte laden Sie ein Bild hoch:"
     convertImage = st.file_uploader(label="convert images", type=['png'])
     if convertImage is not None:
         imgConvert = load_image(convertImage)
