@@ -32,44 +32,54 @@ def main():
         os.remove("images/" + file)
 
     st.title('Nebelspurenanalyse von Strahlen')
-    "Bitte laden Sie in den Drap and Drop File Uploader ein Bild hoch, auf dem die Strahlen analysiert werden sollen. Ein Programm analysiert das Bild und markiert die vorhandenen Strahlen. Dieses Bild kann dann anschließend heruntergeladen werden."
+    img_Kammer = load_image('Nebelspurenkammer.jpg')
+    st.image(img_Kammer)
+    "Bitte laden Sie in den Drag and Drop File Uploader ein Bild hoch, auf dem die Strahlen analysiert werden sollen. Ein Programm analysiert das Bild und markiert die vorhandenen Strahlen. Dieses Bild kann dann anschließend heruntergeladen werden."
 
-    uploadFile = st.file_uploader(label="Bitte fügen Sie hier ihr zu analysierendes Bild ein:", type=[ 'png'])
+    uploadFile = st.file_uploader(label="Bitte fügen Sie hier ihr zu analysierendes Bild ein:", type=[ 'png', 'jpg'])
     if uploadFile is not None:
         # Perform your Manupilations (In my Case applying Filters)
         img_upload = load_image(uploadFile)
         st.image(img_upload)
-        st.write("Image Uploaded Successfully")
+        st.success("Image Uploaded Successfully")
         if st.button("Save and upload"):
+            with st.spinner("Bitte warten, Ihr Bild wird hochgeladen."):
+                now = datetime.now()
+                currentTime = now.strftime("%d-%m-%Y-%H-%M-%S")
+                imageNameAWS_upload = "Test_Webseite/" + currentTime + ".PNG"
+                imageNameStre_upload = "images/" + currentTime + ".PNG"
+                imageNameStre_download = "images/" + currentTime + "Download.PNG"
+                imageNameAWS_download = "processed_images/" + currentTime + ".PNG"
 
-            now = datetime.now()
-            currentTime = now.strftime("%d-%m-%Y-%H-%M-%S")
-            imageNameAWS_upload = "Test_Webseite/" + currentTime + ".PNG"
-            imageNameStre_upload = "images/" + currentTime + ".PNG"
+                img_upload.save(imageNameStre_upload)
+                s3.Bucket('mybucket-tes-3').upload_file(Filename=imageNameStre_upload, Key=imageNameAWS_upload)
 
-            img_upload.save(imageNameStre_upload)
-            s3.Bucket('mybucket-tes-3').upload_file(Filename=imageNameStre_upload, Key=imageNameAWS_upload)
-
-            with st.spinner("Waiting"):
-                time.sleep(45)
-            imageNameStre_download = "images/" + currentTime + "Download.PNG"
-            imageNameAWS_download = "processed_images/" + currentTime + ".PNG"
-            try:
-                s3.Bucket('mybucket-tes-3').download_file(Key=imageNameAWS_download, Filename=imageNameStre_download)
-            except botocore.exceptions.ClientError:
-                s3.Bucket('mybucket-tes-3').download_file(Key=imageNameAWS_download, Filename=imageNameStre_download)
-
-            print("Download Sucessfull")
-            with open(imageNameStre_download, "rb") as file:
-                btn = st.download_button(
-                label = "Download image with bounding boxes",
-                data = file,
-                file_name = "images/" + "Strahlen.png",
-                mime = "image/png"
-                )
+            has_downloaded = False
+            for i in range(0,20):
+                with st.spinner("Bitte warten, Ihr Bild wird analysiert."):
+                    time.sleep(3)
+                try:
+                    s3.Bucket('mybucket-tes-3').download_file(Key=imageNameAWS_download, Filename=imageNameStre_download)
+                    has_downloaded = True
+                    break
+                except botocore.exceptions.ClientError:
+                    continue
+            if has_downloaded:
+                st.success("Download Sucessfull")
+                img_download = load_image(imageNameStre_download)
+                st.image(img_download)
+                with open(imageNameStre_download, "rb") as file:
+                    btn = st.download_button(
+                    label = "Download image with bounding boxes",
+                    data = file,
+                    file_name = "images/" + "Strahlen.png",
+                    mime = "image/png"
+                    )
+            else:
+                st.error("Es ist ein Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator!")
 
     else:
-        st.write("Sie haben noch kein Bild hochladen oder ihr Bild ist nicht im png Format.")
+        st.write("Sie haben noch kein Bild hochladen oder ihr Bild ist nicht im .png oder .jpg Format.")
 
     st.header('Farbbilder konvertieren')
     "Hier können Sie Farbbilder in 8-Bit Grauwertbilder konvertieren. Bitte laden Sie ein Bild hoch:"
