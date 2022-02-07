@@ -31,7 +31,18 @@ def main():
     for file in os.listdir("images"):
         os.remove("images/" + file)
 
+
     st.title('Nebelspurenanalyse von Strahlen')
+    "In dieser Nebelkammer wird die unsichtbare inonisierende Strahlung detektiert. Die unterschiedlichen Strahlenarten sind hierbei nicht so einfach voneinander zu unterscheiden."
+    "Daher gibt es hier einen kurzen Einblick in die Unterschiede zwischen Alpha-, Betastrahlung und Myonen. Ein typischer Alpha-Strahler ist Uran."
+    st.subheader('Alpha Strahlung')
+    "Alpha-Strahlung ist eine stark ionisierende Strahlung, die bei radioaktiven Zerfall freigesetzt wird. Sie besteht aus zwei Protonen und zwei Neutronen."
+    "Von einem Alpha-Strahler gehen ungefähr gleichlange Spuren aus. Die Länge der Spuren liegt im Bereich von 1-1,6 cm"
+    st.subheader('Beta-Strahlung')
+    "Bei der Beta-Strahlung gibt es sowohl die Beta(+)- als auch die Beta(-)-Strahlung. Bei der Beta(+)-Strahlung wird ein Elektron freigesetzt. Bei der Beta(-)-Strahlung wird ein Positron freigesetzt."
+    "Beta-Strahlung lässt sich nur schwer erkennen, da sie oft im Hintergrundnebel untergehen. Diese Strahlung ist hauptsächlich durch Kurven zu erkennen. Die schnelleren Strahlen bleiben größtenteils geradlining"
+    st.subheader('Myonen')
+    "Myonen sind kpmische Strahlen. Sie taucht nur sehr selten auf und ist erkennbar durch sehr große und dichte Spuren."
     img_Kammer = load_image('Nebelspurenkammer.jpg')
     st.image(img_Kammer)
     "Bitte laden Sie in den Drag and Drop File Uploader ein Bild hoch, auf dem die Strahlen analysiert werden sollen. Ein Programm analysiert das Bild und markiert die vorhandenen Strahlen. Dieses Bild kann dann anschließend heruntergeladen werden."
@@ -45,7 +56,7 @@ def main():
         if st.button("Save and upload"):
             with st.spinner("Bitte warten, Ihr Bild wird hochgeladen."):
                 now = datetime.now()
-                currentTime = now.strftime("%d-%m-%Y-%H-%M-%S")
+                currentTime = now.strftime("%d-%m-%Y-%H-%M-%S-%f")
                 imageNameAWS_upload = "Test_Webseite/" + currentTime + ".PNG"
                 imageNameStre_upload = "images/" + currentTime + ".PNG"
                 imageNameStre_download = "images/" + currentTime + "Download.PNG"
@@ -75,40 +86,50 @@ def main():
                     file_name = "images/" + "Strahlen.png",
                     mime = "image/png"
                     )
+                s3.Object('mybucket-tes-3', imageNameAWS_download).delete()
+
+
             else:
                 st.error("Es ist ein Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator!")
 
     else:
         st.write("Sie haben noch kein Bild hochladen oder ihr Bild ist nicht im .png oder .jpg Format.")
 
-    st.header('Farbbilder konvertieren')
-    "Hier können Sie Farbbilder in 8-Bit Grauwertbilder konvertieren. Bitte laden Sie ein Bild hoch:"
-    convertImage = st.file_uploader(label="convert images", type=['png'])
-    if convertImage is not None:
-        imgConvert = load_image(convertImage)
-        st.image(imgConvert)
-        st.write("Image Uploaded Successfully")
-
-        now = datetime.now()
-        currentTime = now.strftime("%d-%m-%Y-%H-%M-%S")
-        imageNameGray = "images/" + currentTime + ".png"
-        if st.button("Convert to grayscale"):
-            imgGray = imgConvert.convert('L')
-            #size = [1280, 720]
-            #imgGray = imgGray.resize(size)
-            imgGray = np.array(imgGray)
-            imgGray = skimage.measure.block_reduce(imgGray, (3,3), np.max)
-            imgGray = Image.fromarray(imgGray)
-            imgGray.save(imageNameGray)
-            st.image(imgGray)
-
-            with open(imageNameGray, "rb") as file:
-                btn = st.download_button(
-                label = "Download grayscale image",
-                data = file,
-                file_name = currentTime + ".png",
-                mime = "image/png"
-                )
+    # st.header('Farbbilder konvertieren')
+    # "Hier können Sie Farbbilder in 8-Bit Grauwertbilder konvertieren. Bitte laden Sie ein Bild hoch:"
+    # convertImage = st.file_uploader(label="convert images", type=['png'])
+    # if convertImage is not None:
+    #     imgConvert = load_image(convertImage)
+    #     st.image(imgConvert)
+    #     st.write("Image Uploaded Successfully")
+    #
+    #     now = datetime.now()
+    #     currentTime = now.strftime("%d-%m-%Y-%H-%M-%S")
+    #     imageNameGray = "images/" + currentTime + ".png"
+    #     if st.button("Convert to grayscale"):
+    #         imgGray = imgConvert.convert('L')
+    #         #size = [1280, 720]
+    #         #imgGray = imgGray.resize(size)
+    #         imgGray = np.array(imgGray)
+    #         #imgGray = skimage.measure.block_reduce(imgGray, (3,3), np.max)
+    #         M, N = imgGray.shape
+    #         K = 3
+    #         L = 3
+    #
+    #         MK = M // K
+    #         NL = N // L
+    #         imgGray = imgGray[:MK * K, :NL * L].reshape(MK, K, NL, L).max(axis=(1, 3))
+    #         imgGray = Image.fromarray(imgGray)
+    #         imgGray.save(imageNameGray)
+    #         st.image(imgGray)
+    #
+    #         with open(imageNameGray, "rb") as file:
+    #             btn = st.download_button(
+    #             label = "Download grayscale image",
+    #             data = file,
+    #             file_name = currentTime + ".png",
+    #             mime = "image/png"
+    #             )
 
 
 
