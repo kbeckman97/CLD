@@ -105,7 +105,8 @@ def main():
         alpha = load_image('beta.jpg')
         st.image(alpha)
     with Beta_Erklaerung:
-        "Bei der Beta-Strahlung gibt es sowohl die Beta(+)- als auch die Beta(-)-Strahlung. Bei der Beta(+)-Strahlung wird ein Elektron freigesetzt. Bei der Beta(-)-Strahlung wird ein Positron freigesetzt."
+        "Bei der Beta ± Strahlung wir ein Elektron/ Positron freigesetzt."
+        #"Bei der Beta-Strahlung gibt es sowohl die Beta(+)- als auch die Beta(-)-Strahlung. Bei der Beta(+)-Strahlung wird ein Elektron freigesetzt. Bei der Beta(-)-Strahlung wird ein Positron freigesetzt."
         "Beta-Strahlung lässt sich nur schwer erkennen, da sie oft im Hintergrundnebel untergehen. Diese Strahlung ist hauptsächlich durch Kurven zu erkennen. Die schnelleren Strahlen bleiben größtenteils geradlining"
     st.subheader('Myonen')
     Myonen_bild, Myonen_Erklaerung = st.columns(2)
@@ -113,7 +114,7 @@ def main():
         myonen = load_image('Myonen.jpg')
         st.image(myonen)
     with Myonen_Erklaerung:
-        "Myonen sind kosmische Strahlen. Sie taucht nur sehr selten auf und ist erkennbar durch sehr große und dichte Spuren."
+        "Myonen sind kosmische Strahlen. Sie tauchen nur sehr selten auf und sind erkennbar durch sehr große und dichte Spuren."
 
     # st.header('Farbbilder konvertieren')
     # "Hier können Sie Farbbilder in 8-Bit Grauwertbilder konvertieren. Bitte laden Sie ein Bild hoch:"
