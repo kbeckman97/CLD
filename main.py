@@ -33,37 +33,6 @@ def main():
 
 
     st.title('Nebelspurenanalyse von Strahlen')
-    Kammer__Erklaerung, Kammer_bild = st.columns(2)
-    with Kammer_bild:
-        img_Kammer = load_image('Nebelspurenkammer.jpg')
-        st.image(img_Kammer, width=300)
-    with Kammer__Erklaerung:
-        "In dieser Nebelkammer wird die unsichtbare inonisierende Strahlung detektiert. Die unterschiedlichen Strahlenarten sind hierbei nicht so einfach voneinander zu unterscheiden."
-        "Daher gibt es hier einen kurzen Einblick in die Unterschiede zwischen Alpha-, Betastrahlung und Myonen. Ein typischer Alpha-Strahler ist Uran."
-
-    st.subheader('Alpha Strahlung')
-    alpha_bild, Alpha_Erklaerung = st.columns(2)
-    with alpha_bild:
-        alpha = load_image('alpha.jpg')
-        st.image(alpha)
-    with Alpha_Erklaerung:
-        "Alpha-Strahlung ist eine stark ionisierende Strahlung, die bei radioaktiven Zerfall freigesetzt wird. Sie besteht aus zwei Protonen und zwei Neutronen."
-        "Von einem Alpha-Strahler gehen ungefähr gleichlange Spuren aus. Die Länge der Spuren liegt im Bereich von 1-1,6 cm"
-    st.subheader('Beta Strahlung')
-    beta_bild, Beta_Erklaerung = st.columns(2)
-    with beta_bild:
-        alpha = load_image('beta.jpg')
-        st.image(alpha)
-    with Beta_Erklaerung:
-            "Bei der Beta-Strahlung gibt es sowohl die Beta(+)- als auch die Beta(-)-Strahlung. Bei der Beta(+)-Strahlung wird ein Elektron freigesetzt. Bei der Beta(-)-Strahlung wird ein Positron freigesetzt."
-            "Beta-Strahlung lässt sich nur schwer erkennen, da sie oft im Hintergrundnebel untergehen. Diese Strahlung ist hauptsächlich durch Kurven zu erkennen. Die schnelleren Strahlen bleiben größtenteils geradlining"
-    st.subheader('Beta Strahlung')
-    Myonen_bild, Myonen_Erklaerung = st.columns(2)
-    with Myonen_bild:
-        myonen = load_image('Myonen.jpg')
-        st.image(myonen)
-    with Myonen_Erklaerung:
-        "Myonen sind kpmische Strahlen. Sie taucht nur sehr selten auf und ist erkennbar durch sehr große und dichte Spuren."
     "Bitte laden Sie in den Drag and Drop File Uploader ein Bild hoch, auf dem die Strahlen analysiert werden sollen. Ein Programm analysiert das Bild und markiert die vorhandenen Strahlen. Dieses Bild kann dann anschließend heruntergeladen werden."
 
     uploadFile = st.file_uploader(label="Bitte fügen Sie hier ihr zu analysierendes Bild ein:", type=[ 'png', 'jpg'])
@@ -113,6 +82,38 @@ def main():
 
     else:
         st.write("Sie haben noch kein Bild hochladen oder ihr Bild ist nicht im .png oder .jpg Format.")
+
+    Kammer__Erklaerung, Kammer_bild = st.columns(2)
+    with Kammer_bild:
+        img_Kammer = load_image('Nebelspurenkammer.jpg')
+        st.image(img_Kammer, width=300)
+    with Kammer__Erklaerung:
+        "In dieser Nebelkammer wird die sonst unsichtbare inonisierende Strahlung mit Hilfe von Alkoholnebel sichtbar gemacht. Die unterschiedlichen Strahlenarten sind hierbei nicht so einfach voneinander zu unterscheiden."
+        "Daher gibt es hier einen kurzen Einblick in die Unterschiede zwischen Alpha-, Betastrahlung und Myonen. Ein typischer Alpha-Strahler ist Uran."
+
+    st.subheader('Alpha Strahlung')
+    alpha_bild, Alpha_Erklaerung = st.columns(2)
+    with alpha_bild:
+        alpha = load_image('alpha.jpg')
+        st.image(alpha)
+    with Alpha_Erklaerung:
+        "Alpha-Strahlung ist eine stark ionisierende Strahlung, die bei radioaktiven Zerfall freigesetzt wird. Sie besteht aus zwei Protonen und zwei Neutronen."
+        "Von einem Alpha-Strahler gehen ungefähr gleichlange Spuren aus. Die Länge der Spuren liegt im Bereich von 1-1,6 cm"
+    st.subheader('Beta Strahlung')
+    beta_bild, Beta_Erklaerung = st.columns(2)
+    with beta_bild:
+        alpha = load_image('beta.jpg')
+        st.image(alpha)
+    with Beta_Erklaerung:
+        "Bei der Beta-Strahlung gibt es sowohl die Beta(+)- als auch die Beta(-)-Strahlung. Bei der Beta(+)-Strahlung wird ein Elektron freigesetzt. Bei der Beta(-)-Strahlung wird ein Positron freigesetzt."
+        "Beta-Strahlung lässt sich nur schwer erkennen, da sie oft im Hintergrundnebel untergehen. Diese Strahlung ist hauptsächlich durch Kurven zu erkennen. Die schnelleren Strahlen bleiben größtenteils geradlining"
+    st.subheader('Myonen')
+    Myonen_bild, Myonen_Erklaerung = st.columns(2)
+    with Myonen_bild:
+        myonen = load_image('Myonen.jpg')
+        st.image(myonen)
+    with Myonen_Erklaerung:
+        "Myonen sind kosmische Strahlen. Sie taucht nur sehr selten auf und ist erkennbar durch sehr große und dichte Spuren."
 
     # st.header('Farbbilder konvertieren')
     # "Hier können Sie Farbbilder in 8-Bit Grauwertbilder konvertieren. Bitte laden Sie ein Bild hoch:"
