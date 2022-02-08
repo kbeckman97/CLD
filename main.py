@@ -40,8 +40,8 @@ def main():
         # Perform your Manupilations (In my Case applying Filters)
         img_upload = load_image(uploadFile)
         st.image(img_upload)
-        st.success("Image Uploaded Successfully")
-        if st.button("Save and upload"):
+        st.success("Das Bild wurde erfolgreich hochgeladen.")
+        if st.button("Speichern und Analysieren"):
             with st.spinner("Bitte warten, Ihr Bild wird hochgeladen."):
                 now = datetime.now()
                 currentTime = now.strftime("%d-%m-%Y-%H-%M-%S-%f")
@@ -64,12 +64,12 @@ def main():
                 except botocore.exceptions.ClientError:
                     continue
             if has_downloaded:
-                st.success("Download Sucessfull")
+                st.success("Das Bild wurde erfolgreich analysiert.")
                 img_download = load_image(imageNameStre_download)
                 st.image(img_download)
                 with open(imageNameStre_download, "rb") as file:
                     btn = st.download_button(
-                    label = "Download image with bounding boxes",
+                    label = "Bild herunterladen.",
                     data = file,
                     file_name = "images/" + "Strahlen.png",
                     mime = "image/png"
